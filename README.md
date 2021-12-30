@@ -12,7 +12,7 @@ Text mining and sentiment analysis of adjectives and verbs that surround masculi
 - The word comparison between gender pronouns were then visualized for facilitated analysis using `ggplot2` package.
 - The results demonstrate the stereotypical implication of genders roles within fictional plots. 
 
-## Assumpmtions
+## Assumptions
 - Although gender is non-binary we only considered male and female pronouns for
 simplicity and ignored neutral pronouns such as ‘they/them.’
 - Proper nouns such as ‘John’ or ‘Jane’ were not considered.
