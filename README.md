@@ -1,5 +1,5 @@
 # Fairy Tales Text Analysis
-Text mining and sentiment analysis of adjectives and verbs that surround masculine (he/him/his) and feminine (she/her/hers) pronouns.
+Text mining and sentiment analysis of adjectives and verbs that surround masculine (he/him/his/himself) and feminine (she/her/hers/herself) pronouns.
 
 ## How to start the analysis
 1. Download and open folder on RStudio
@@ -11,6 +11,13 @@ Text mining and sentiment analysis of adjectives and verbs that surround masculi
 - The frequency and the sentiment of a word was then used to calculate sentiment severity.
 - The word comparison between gender pronouns were then visualized for facilitated analysis using `ggplot2` package.
 - The results demonstrate the stereotypical implication of genders roles within fictional plots. 
+
+## Assumpmtions
+- Although gender is non-binary we only considered male and female pronouns for
+simplicity and ignored neutral pronouns such as ‘they/them.’
+- Proper nouns such as ‘John’ or ‘Jane’ were not considered.
+- Dataset contained only popular fairy tales.
+
 
 ## Bigram Visualizations
 
