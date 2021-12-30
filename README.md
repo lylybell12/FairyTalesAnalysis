@@ -1,12 +1,9 @@
 # Fairy Tales Text Analysis
 Text mining and sentiment analysis of adjectives and verbs that surround masculine (he/him/his) and feminine (she/her/hers) pronouns.
 
-
-## How to run the analysis
-1. Download and open folder on RStudio
-
 ## How to start the analysis
-1. run all code on an R notebook
+1. Download and open folder on RStudio
+2. run all code on an R notebook
 
 ## Project Overview
 I produced a text mining algorithm to compare the significance of words surrounding pronouns. I approached this via text analysis on R using the
