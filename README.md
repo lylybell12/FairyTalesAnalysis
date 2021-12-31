@@ -16,7 +16,7 @@ Text mining and sentiment analysis of adjectives and verbs that surround masculi
 - Although gender is non-binary we only considered male and female pronouns for
 simplicity and ignored neutral pronouns such as ‘they/them.’
 - Proper nouns such as ‘John’ or ‘Jane’ were not considered.
-- Dataset contained only popular fairy tales.
+- Dataset contained only top 20 popular fairy tales.
 
 
 ## Bigram Visualizations
