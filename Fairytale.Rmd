@@ -1,0 +1,128 @@
+---
+title: "All Pronouns w/ MoreFairytales"
+output: html_notebook
+---
+
+```{r}
+library(tidytext)
+library(tidyr)
+library(readr)
+library(dplyr)
+library(scales)
+library(ggplot2)
+```
+
+```{r}
+# Plots and titles are in separate files
+plots <- read_lines("MoreFairytales.txt", progress = FALSE)
+titles <- c("Fairy Tales")
+
+# Each story ends with an <EOS> line
+plot_text <- data_frame(text = plots) %>%
+  mutate(story_number = cumsum(text == "<EOS>") + 1,
+         title = titles[story_number]) %>%
+  filter(text != "<EOS>")
+```
+
+```{r}
+bigrams <- plot_text %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2)
+
+bigrams_separated <- bigrams %>% 
+  separate(bigram, c("word1", "word2"), sep = " ")
+```
+
+```{r}
+masculine_words <- c("he", "his", "him", "himself")
+feminine_words <- c("she", "her", "hers", "herself")
+
+he_she_words <- bigrams_separated %>%
+  filter(word1 %in% c(masculine_words, feminine_words))
+
+he_she_words
+```
+
+```{r he_she_counts, dependson = "bigrams_separated"}
+### Gender-associated verbs
+##Which words were most shifted towards occurring after "he" or "she"? We'll filter for words that appeared at least x times
+
+
+he_she_counts <- he_she_words %>%
+  count(word1, word2) %>% 
+  spread(word1, n, fill = 0) %>%
+  mutate(total = he + him + his + himself + she + her + hers + herself,
+         he = (he + 1) / sum(he + 1),
+         him = (him + 1) / sum(him + 1),
+         his = (his + 1) / sum(his + 1),
+         himself = (himself + 1) / sum(himself + 1),
+         she = (she + 1) / sum(she + 1),
+         her = (her + 1) / sum(her + 1),
+         hers = (hers + 1) / sum(hers + 1),
+         herself = (herself + 1) / sum(herself + 1),
+
+         masculine = he + his + him + himself,
+         feminine = she + her + hers + herself,
+         
+         
+         log_ratio = log2(masculine / feminine),
+         abs_ratio = abs(log_ratio)) %>%
+  arrange(desc(log_ratio))
+
+he_she_counts   
+```
+
+```{r}
+# I did this for the sake of a sample for the thesis
+he_she_counts %>%
+  filter(!word2 %in% c("a", "the", "on", "with", "it", "to", "and", "in", "was", "as","how", "can", "of", "but", "not", "so", "for", "had", "if","that", "you", "I", "at", "is", "by", "when", "will", "The", "And", "did", "would", "could"),
+         total>= 20)
+```
+
+```{r}
+#extracting sentiment analysis 
+AFINN <- get_sentiments("afinn")
+
+AFINN
+
+words <- he_she_counts %>%
+  inner_join(AFINN , by = c(word2 = "word")) %>%
+  count(word2, masculine, feminine, value, total, sort = TRUE)
+
+words[1:5]
+```
+
+```{r}
+words %>%
+  mutate(contribution = masculine * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  head(20) %>%
+  mutate(word2 = reorder(word2, contribution)) %>%
+  ggplot(aes(masculine * value, word2, fill = masculine * value > 0)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = "Sentiment Severity",
+       y = "words near masculine pronouns")
+
+meaningful_words <- words %>%
+  mutate(contribution = masculine * value) %>%
+  count(word2, contribution, total)
+
+meaningful_words[1:3]
+```
+
+```{r}
+words %>%
+  mutate(contribution = feminine * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  head(20) %>%
+  mutate(word2 = reorder(word2, contribution)) %>%
+  ggplot(aes(feminine * value, word2, fill = feminine * value > 0)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = "Sentiment Severity",
+       y = "words near feminine pronouns")
+
+meaningful_words <- words %>%
+  mutate(contribution = masculine * value) %>%
+  count(word2, contribution, total)
+
+meaningful_words[1:3]
+```
