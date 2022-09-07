@@ -1,4 +1,4 @@
-# Fairy Tales Text Analysis (in-progress)
+# Fairy Tales Text Analysis (first semester progress)
 Text mining and sentiment analysis of adjectives and verbs that surround masculine (he/him/his/himself) and feminine (she/her/hers/herself) pronouns. The goal is to use this text-mining algorithm to assess the effects of sexism in children's educational content to uncover underlying influences in gender and STEM enrollment disproportionality. 
 
 ## How to start the analysis
